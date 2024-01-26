@@ -1,0 +1,355 @@
+import requests
+from bs4 import BeautifulSoup
+#import pandas as pd
+import re
+from urllib.request import urlopen
+
+def Premier_League():
+    PL_standing_url = "https://fbref.com/en/comps/9/Premier-League-Stats"
+
+    page = urlopen(PL_standing_url)
+
+    html_bytes = page.read()
+    html = html_bytes.decode("utf-8")
+
+    data = requests.get(PL_standing_url)
+
+    soup = BeautifulSoup(data.text, features="html.parser")
+    standing_table = soup.select("table.stats_table")[0]
+
+    name_links = standing_table.find_all("a")
+    name_links = [l.get("href") for l in name_links]
+    name_links = [l for l in name_links if '/squads' in l]
+
+    names=[]
+
+    for i in range(0,len(name_links)):
+        names.append(name_links[i][20:-6].replace("-"," "))
+
+    pattern_games = '<td class="right .*?" data-stat="games" >.*?</td>'
+    games = re.findall(pattern_games, html , re.IGNORECASE)
+
+    PL=[]
+
+    for i in range(0,len(games)):
+        PL.append(games[i][-7:-5].replace(">","0"))
+        
+
+    pattern_wins = '<td class="right .*?" data-stat="wins" >.*?</td>'
+    wins = re.findall(pattern_wins , html , re.IGNORECASE)
+
+    W=[]
+    for i in range(0,len(wins)):
+        W.append(wins[i][-7:-5].replace(">","0"))
+        
+    pattern_draws = '<td class="right .*?" data-stat="ties" >.*?</td>'
+    ties = re.findall(pattern_draws , html , re.IGNORECASE)
+
+    D=[]
+    for i in range(0,len(ties)):
+        D.append(ties[i][-7:-5].replace(">","0"))
+        
+    pattern_losses = '<td class="right .*?" data-stat="losses" >.*?</td>'
+    losses = re.findall(pattern_losses, html , re.IGNORECASE)
+
+    L=[]
+    for i in range(0,len(losses)):
+        L.append(losses[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_for = '<td class="right .*?" data-stat="goals_for" >.*?</td>'
+    goal_for = re.findall(pattern_goal_for, html , re.IGNORECASE)
+
+    GF=[]
+    for i in range(0,len(goal_for)):
+        GF.append(goal_for[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_against = '<td class="right .*?" data-stat="goals_against" >.*?</td>'
+    goal_against = re.findall(pattern_goal_against, html , re.IGNORECASE)
+
+    GA=[]
+    for i in range(0,len(goal_against)):
+        GA.append(goal_against[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_diff = '<td class="right .*?" data-stat="goal_diff" >.*?</td>'
+    goal_diff = re.findall(pattern_goal_diff, html , re.IGNORECASE)
+
+    GD=[]
+    for i in range(0,len(goal_diff)):
+        GD.append(goal_diff[i][-8:-5].replace(">",""))
+        
+    pattern_points = '<td class="right .*?" data-stat="points" >.*?</td>'
+    points = re.findall(pattern_points, html , re.IGNORECASE)
+
+    P=[]
+    for i in range(0,len(points)):
+        P.append(points[i][-7:-5].replace(">","0"))
+        
+    print("Premier League Standing---PL  W  D  L  GF  GA  GD  P")
+    for i in range(0,len(names)):
+        print("\n",i+1," . ",names[i],"\t",PL[i],"\t",W[i],"\t",D[i],"\t",L[i],"\t",GF[i],"\t",GA[i],"\t",GD[i],"\t",P[i])
+        
+def Serie_A():
+    Serie_A_standing_url = "https://fbref.com/en/comps/11/Serie-A-Stats"
+
+    page = urlopen(Serie_A_standing_url)
+
+    html_bytes = page.read()
+    html = html_bytes.decode("utf-8")
+
+    data = requests.get(Serie_A_standing_url)
+
+    soup = BeautifulSoup(data.text, features="html.parser")
+
+    standing_table = soup.select("table.stats_table")[0]
+
+    name_links = standing_table.find_all("a")
+    name_links = [l.get("href") for l in name_links]
+    name_links = [l for l in name_links if '/squads' in l]
+
+    names=[]
+
+    for i in range(0,len(name_links)):
+        names.append(name_links[i][20:-6].replace("-"," "))
+
+    pattern_games = '<td class="right .*?" data-stat="games" >.*?</td>'
+    games = re.findall(pattern_games, html , re.IGNORECASE)
+
+    PL=[]
+
+    for i in range(0,len(games)):
+        PL.append(games[i][-7:-5].replace(">","0"))
+        
+
+    pattern_wins = '<td class="right .*?" data-stat="wins" >.*?</td>'
+    wins = re.findall(pattern_wins , html , re.IGNORECASE)
+
+    W=[]
+    for i in range(0,len(wins)):
+        W.append(wins[i][-7:-5].replace(">","0"))
+        
+    pattern_draws = '<td class="right .*?" data-stat="ties" >.*?</td>'
+    ties = re.findall(pattern_draws , html , re.IGNORECASE)
+
+    D=[]
+    for i in range(0,len(ties)):
+        D.append(ties[i][-7:-5].replace(">","0"))
+        
+    pattern_losses = '<td class="right .*?" data-stat="losses" >.*?</td>'
+    losses = re.findall(pattern_losses, html , re.IGNORECASE)
+
+    L=[]
+    for i in range(0,len(losses)):
+        L.append(losses[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_for = '<td class="right .*?" data-stat="goals_for" >.*?</td>'
+    goal_for = re.findall(pattern_goal_for, html , re.IGNORECASE)
+
+    GF=[]
+    for i in range(0,len(goal_for)):
+        GF.append(goal_for[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_against = '<td class="right .*?" data-stat="goals_against" >.*?</td>'
+    goal_against = re.findall(pattern_goal_against, html , re.IGNORECASE)
+
+    GA=[]
+    for i in range(0,len(goal_against)):
+        GA.append(goal_against[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_diff = '<td class="right .*?" data-stat="goal_diff" >.*?</td>'
+    goal_diff = re.findall(pattern_goal_diff, html , re.IGNORECASE)
+
+    GD=[]
+    for i in range(0,len(goal_diff)):
+        GD.append(goal_diff[i][-8:-5].replace(">",""))
+        
+    pattern_points = '<td class="right .*?" data-stat="points" >.*?</td>'
+    points = re.findall(pattern_points, html , re.IGNORECASE)
+
+    P=[]
+    for i in range(0,len(points)):
+        P.append(points[i][-7:-5].replace(">","0"))
+        
+    print("\nSerie A Standing---PL  W  D  L  GF  GA  GD  P")
+    for i in range(0,len(names)):
+        print("\n",i+1," . ",names[i],"\t",PL[i],"\t",W[i],"\t",D[i],"\t",L[i],"\t",GF[i],"\t",GA[i],"\t",GD[i],"\t",P[i])   
+        
+def La_Liga():
+    La_Liga_standing_url = "https://fbref.com/en/comps/12/La-Liga-Stats"
+
+    page = urlopen(La_Liga_standing_url)
+
+    html_bytes = page.read()
+    html = html_bytes.decode("utf-8")
+
+    data = requests.get(La_Liga_standing_url)
+
+    soup = BeautifulSoup(data.text, features="html.parser")
+
+    standing_table = soup.select("table.stats_table")[0]
+
+    name_links = standing_table.find_all("a")
+    name_links = [l.get("href") for l in name_links]
+    name_links = [l for l in name_links if '/squads' in l]
+
+    names=[]
+
+    for i in range(0,len(name_links)):
+        names.append(name_links[i][20:-6].replace("-"," "))
+
+    pattern_games = '<td class="right .*?" data-stat="games" >.*?</td>'
+    games = re.findall(pattern_games, html , re.IGNORECASE)
+
+    PL=[]
+
+    for i in range(0,len(games)):
+        PL.append(games[i][-7:-5].replace(">","0"))
+        
+
+    pattern_wins = '<td class="right .*?" data-stat="wins" >.*?</td>'
+    wins = re.findall(pattern_wins , html , re.IGNORECASE)
+
+    W=[]
+    for i in range(0,len(wins)):
+        W.append(wins[i][-7:-5].replace(">","0"))
+        
+    pattern_draws = '<td class="right .*?" data-stat="ties" >.*?</td>'
+    ties = re.findall(pattern_draws , html , re.IGNORECASE)
+
+    D=[]
+    for i in range(0,len(ties)):
+        D.append(ties[i][-7:-5].replace(">","0"))
+        
+    pattern_losses = '<td class="right .*?" data-stat="losses" >.*?</td>'
+    losses = re.findall(pattern_losses, html , re.IGNORECASE)
+
+    L=[]
+    for i in range(0,len(losses)):
+        L.append(losses[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_for = '<td class="right .*?" data-stat="goals_for" >.*?</td>'
+    goal_for = re.findall(pattern_goal_for, html , re.IGNORECASE)
+
+    GF=[]
+    for i in range(0,len(goal_for)):
+        GF.append(goal_for[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_against = '<td class="right .*?" data-stat="goals_against" >.*?</td>'
+    goal_against = re.findall(pattern_goal_against, html , re.IGNORECASE)
+
+    GA=[]
+    for i in range(0,len(goal_against)):
+        GA.append(goal_against[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_diff = '<td class="right .*?" data-stat="goal_diff" >.*?</td>'
+    goal_diff = re.findall(pattern_goal_diff, html , re.IGNORECASE)
+
+    GD=[]
+    for i in range(0,len(goal_diff)):
+        GD.append(goal_diff[i][-8:-5].replace(">",""))
+        
+    pattern_points = '<td class="right .*?" data-stat="points" >.*?</td>'
+    points = re.findall(pattern_points, html , re.IGNORECASE)
+
+    P=[]
+    for i in range(0,len(points)):
+        P.append(points[i][-7:-5].replace(">","0"))
+        
+    print("\nLaLiga Standing---PL  W  D  L  GF  GA  GD  P")
+    for i in range(0,len(names)):
+        print("\n",i+1," . ",names[i],"\t",PL[i],"\t",W[i],"\t",D[i],"\t",L[i],"\t",GF[i],"\t",GA[i],"\t",GD[i],"\t",P[i])   
+        
+def Persian_Gulf_Pro_League():
+    Persian_Gulf_Pro_League_url = "https://fbref.com/en/comps/64/Persian-Gulf-Pro-League-Stats"
+
+    page = urlopen(Persian_Gulf_Pro_League_url )
+
+    html_bytes = page.read()
+    html = html_bytes.decode("utf-8")
+
+    data = requests.get(Persian_Gulf_Pro_League_url )
+
+    soup = BeautifulSoup(data.text, features="html.parser")
+
+    standing_table = soup.select("table.stats_table")[0]
+
+    name_links = standing_table.find_all("a")
+    name_links = [l.get("href") for l in name_links]
+    name_links = [l for l in name_links if '/squads' in l]
+
+    names=[]
+
+    for i in range(0,len(name_links)):
+        names.append(name_links[i][20:-6].replace("-"," "))
+
+    pattern_games = '<td class="right .*?" data-stat="games" >.*?</td>'
+    games = re.findall(pattern_games, html , re.IGNORECASE)
+
+    PL=[]
+
+    for i in range(0,len(games)):
+        PL.append(games[i][-7:-5].replace(">","0"))
+        
+
+    pattern_wins = '<td class="right .*?" data-stat="wins" >.*?</td>'
+    wins = re.findall(pattern_wins , html , re.IGNORECASE)
+
+    W=[]
+    for i in range(0,len(wins)):
+        W.append(wins[i][-7:-5].replace(">","0"))
+        
+    pattern_draws = '<td class="right .*?" data-stat="ties" >.*?</td>'
+    ties = re.findall(pattern_draws , html , re.IGNORECASE)
+
+    D=[]
+    for i in range(0,len(ties)):
+        D.append(ties[i][-7:-5].replace(">","0"))
+        
+    pattern_losses = '<td class="right .*?" data-stat="losses" >.*?</td>'
+    losses = re.findall(pattern_losses, html , re.IGNORECASE)
+
+    L=[]
+    for i in range(0,len(losses)):
+        L.append(losses[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_for = '<td class="right .*?" data-stat="goals_for" >.*?</td>'
+    goal_for = re.findall(pattern_goal_for, html , re.IGNORECASE)
+
+    GF=[]
+    for i in range(0,len(goal_for)):
+        GF.append(goal_for[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_against = '<td class="right .*?" data-stat="goals_against" >.*?</td>'
+    goal_against = re.findall(pattern_goal_against, html , re.IGNORECASE)
+
+    GA=[]
+    for i in range(0,len(goal_against)):
+        GA.append(goal_against[i][-7:-5].replace(">","0"))
+        
+    pattern_goal_diff = '<td class="right .*?" data-stat="goal_diff" >.*?</td>'
+    goal_diff = re.findall(pattern_goal_diff, html , re.IGNORECASE)
+
+    GD=[]
+    for i in range(0,len(goal_diff)):
+        GD.append(goal_diff[i][-8:-5].replace(">",""))
+        
+    pattern_points = '<td class="right .*?" data-stat="points" >.*?</td>'
+    points = re.findall(pattern_points, html , re.IGNORECASE)
+
+    P=[]
+    for i in range(0,len(points)):
+        P.append(points[i][-7:-5].replace(">","0"))
+        
+    print("\nPersian Gulf Pro League Standing---PL  W  D  L  GF  GA  GD  P")
+    for i in range(0,len(names)):
+        print("\n",i+1," . ",names[i],"\t",PL[i],"\t",W[i],"\t",D[i],"\t",L[i],"\t",GF[i],"\t",GA[i],"\t",GD[i],"\t",P[i])   
+        
+Premier_League()
+Serie_A()
+La_Liga()
+Persian_Gulf_Pro_League()      
+
+
+
+
+
+
